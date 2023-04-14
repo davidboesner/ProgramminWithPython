@@ -36,7 +36,7 @@ for i in range(1,5):
     training_data_to_plot.append(globals()[var_name])
 
 
-# load training data
+# load ideal data
 df = pd.read_csv('resources/ideal.csv')
 table_name = 'ideal_data'
 df.to_sql(table_name, engine, if_exists='replace', index=False)
