@@ -40,8 +40,8 @@ class _Function2Compare():
         # sum y values
         y1 = np.array(self.f1.get_y_values())
         y2 = np.array(self.f2.get_y_values())
-        sum = get_sum_of_deviations_squared(y1, y2)
-        return sum
+
+        return get_sum_of_deviations_squared(y1, y2)
     
     def __eq__(self, other):        
         return self.__get_sum_of_y_deviations_squared() == other.__get_sum_of_y_deviations_squared()
