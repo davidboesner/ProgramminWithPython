@@ -10,7 +10,7 @@ from exceptions.UnequalsLenghtException import UnequalLengthExcpetion
 The purpose of this class is to find the ideal function, which is the best fit out of the functions provided.
 The criterion for choosing the ideal functions for the training function is how they minimize the sum of all ydeviations squared (Least-Square)
 """
-class _FunctionComparer():
+class _Function2Compare():
     f1 = None
     f2 = None
     
@@ -47,7 +47,7 @@ class IdealDatasetFinder():
     def get_func_with_least_y_squares(self):
         l = []
         for ds in self.all_datasets:
-            fc = _FunctionComparer(self.function,ds)
+            fc = _Function2Compare(self.function,ds)
             l.append(fc)
         return min(l);
     

@@ -4,13 +4,13 @@ Created on 15.04.2023
 @author: david
 '''
 
-class FunctionXY(object):
+class FunctionXY():
     '''
     classdocs
     '''
     
-    self.x_values = None
-    self.y_values = None
+    x_values = None
+    y_values = None
     
     def __init__(self, x_values, y_values):
         if not isinstance(x_values, list):

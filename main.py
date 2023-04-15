@@ -6,14 +6,16 @@ Created on 14.04.2023
 
 
 # load training data
-import pandas as pd
-import sqlalchemy as db
-from bokeh.plotting import figure, show, gridplot
-from bokeh.models import ColumnDataSource
-
-import ideal_dataset_finder.IdealDatasetFinder
 import sys
+
+from bokeh.models import ColumnDataSource
+from bokeh.plotting import figure, show, gridplot
+
+from ideal_dataset_finder import IdealDatasetFinder
+import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
+import sqlalchemy as db
+
 
 engine = db.create_engine('sqlite:///db.db')
 
@@ -81,7 +83,7 @@ show(grid)
 # get each data set of training data
 list_of_training_data = pd2ListOfFunctionsXY(pd_training_data).getListOfFunctionsXY()
 for element in list_of_training_data:
-    idf = ideal_dataset_finder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
+    idf = IdealDatasetFinder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
     idf.get_func_with_least_y_squares();
     
      
