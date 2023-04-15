@@ -11,9 +11,9 @@ import sqlalchemy as db
 from bokeh.plotting import figure, show, gridplot
 from bokeh.models import ColumnDataSource
 
-from IdealDatasetFinder import IdealDatasetFinder
-from pd2dict import pd2ListOfDict
+import ideal_dataset_finder.IdealDatasetFinder
 import sys
+from pd_2_list_of_functions import pd2ListOfFunctionsXY
 
 engine = db.create_engine('sqlite:///db.db')
 
@@ -31,7 +31,7 @@ df.to_sql(table_name, engine, if_exists='replace', index=True)
 pd_training_data = pd.read_sql_table('training_data', engine)
 source = ColumnDataSource(pd_training_data)
 
-pd2dict = pd2ListOfDict(pd_training_data)
+pd2dict = pd2ListOfFunctionsXY(pd_training_data)
 max_y = pd2dict.get_max_y()
 # Create a Bokeh plot
 training_data_to_plot = []
@@ -58,7 +58,7 @@ df.to_sql(table_name, engine, if_exists='replace', index=False)
 pd_ideal_data = pd.read_sql_table('ideal_data', engine)
 source = ColumnDataSource(pd_ideal_data)
 
-pd2dict = pd2ListOfDict(pd_ideal_data)
+pd2dict = pd2ListOfFunctionsXY(pd_ideal_data)
 max_y = pd2dict.get_max_y()
 
 # Create a Bokeh plot
@@ -79,12 +79,10 @@ grid = gridplot([training_data_to_plot, ideal_data_to_plot])
 show(grid)
 
 # get each data set of training data
-list_of_all_training_data = []
-
-pd_training_data
-
-#idf = IdealDatasetFinder(pd_ideal_data, training_dataset);
-#idf.get_func_with_least_y_squares();
+list_of_training_data = pd2ListOfFunctionsXY(pd_training_data).getListOfFunctionsXY()
+for element in list_of_training_data:
+    idf = ideal_dataset_finder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
+    idf.get_func_with_least_y_squares();
     
      
 if __name__ == '__main__':
