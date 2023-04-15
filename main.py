@@ -84,7 +84,11 @@ show(grid)
 list_of_training_data = pd2ListOfFunctionsXY(pd_training_data).getListOfFunctionsXY()
 for element in list_of_training_data:
     idf = IdealDatasetFinder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
-    idf.get_func_with_least_y_squares();
+    fwls = idf.get_func_with_least_y_squares();
+    print("-----------------------------------------------------")
+    print(element)
+    print(fwls)
+    print("-----------------------------------------------------")
     
      
 if __name__ == '__main__':
