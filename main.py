@@ -80,7 +80,6 @@ i=1
 for element in list_of_training_data:
     fig = figure(title='Example Plot', x_axis_label='X', y_axis_label='Y')
     var_name = 'var_ideal_my_func' + str(num)
-    # Add a line glyph to the figure    
 
     idf = IdealDatasetFinder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
     fwls = idf.get_func_with_least_y_squares();
