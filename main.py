@@ -15,7 +15,7 @@ from ideal_dataset_finder import IdealDatasetFinder
 import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
 import sqlalchemy as db
-
+import numpy as np
 
 engine = db.create_engine('sqlite:///db.db')
 
@@ -73,23 +73,29 @@ for i in range(1,max_y):
     globals()[var_name].line(x='x', y='y'+str(i), source=source)
     ideal_data_to_plot.append(globals()[var_name])
 
-grid = gridplot([training_data_to_plot, ideal_data_to_plot])
+# get each data set of training data
+list_of_training_data = pd2ListOfFunctionsXY(pd_training_data).getListOfFunctionsXY()
+list_of_figures = []
+i=1
+for element in list_of_training_data:
+    fig = figure(title='Example Plot', x_axis_label='X', y_axis_label='Y')
+    var_name = 'var_ideal_my_func' + str(num)
+    # Add a line glyph to the figure    
+
+    idf = IdealDatasetFinder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
+    fwls = idf.get_func_with_least_y_squares();
+    globals()[var_name] = figure(x_axis_label='X-Axis', y_axis_label='Y-Axis', title="Found candidate for from list of ideal #" + str(i))
+    x_values= fwls.get_f2().get_x_values()
+    y_values = fwls.get_f2().get_y_values()
+    globals()[var_name].line(x='x', y='y'+str(i), source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values)})))
+    list_of_figures.append(globals()[var_name])
+    i+=1
+grid = gridplot([training_data_to_plot, ideal_data_to_plot, list_of_figures])
 
 #get the ideal data for data set
 
 # Render the plot
-show(grid)
-
-# get each data set of training data
-list_of_training_data = pd2ListOfFunctionsXY(pd_training_data).getListOfFunctionsXY()
-for element in list_of_training_data:
-    idf = IdealDatasetFinder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
-    fwls = idf.get_func_with_least_y_squares();
-    print("-----------------------------------------------------")
-    print(element)
-    print(fwls)
-    print("-----------------------------------------------------")
-    
+show(grid)    
      
 if __name__ == '__main__':
     pass

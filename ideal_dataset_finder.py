@@ -17,7 +17,7 @@ from function_xy import FunctionXY
 from numbaAdder import get_sum_of_deviations_squared
 import numpy as np
 
-class _Function2Compare():
+class Function2Compare():
     f1 = None
     f2 = None
     
@@ -28,7 +28,6 @@ class _Function2Compare():
         self.f1 = f1
         self.f2 = f2
         
-    
     def __get_sum_of_y_deviations_squared(self):
         """
         Gets the sum of the deviations between the functions f1 and f2 sqaured
@@ -53,6 +52,12 @@ class _Function2Compare():
     def __gt__(self, other):
         return self.__get_sum_of_y_deviations_squared() > other.__get_sum_of_y_deviations_squared()
     
+    def get_f1(self):
+        return self.f1
+    
+    def get_f2(self):
+        return self.f2
+    
 class IdealDatasetFinder():
     all_datasets = None
     function = None
@@ -64,7 +69,7 @@ class IdealDatasetFinder():
     def get_func_with_least_y_squares(self):
         l = []
         for ds in self.all_datasets:
-            fc = _Function2Compare(self.function,ds)
+            fc = Function2Compare(self.function,ds)
             l.append(fc)
         return min(l);
     
