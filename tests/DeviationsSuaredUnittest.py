@@ -9,7 +9,7 @@ import unittest
 class Test(unittest.TestCase):
 
     
-    def testFunctionComparer(self):
+    def testNumbaAdder(self):
         d1 = {"dataset_x":[1,2,3],
               "dataset_y":[1,2,3]}
         
