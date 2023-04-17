@@ -84,7 +84,7 @@ for element in list_of_training_data:
 
     idf = IdealDatasetFinder(pd2ListOfFunctionsXY(pd_ideal_data).getListOfFunctionsXY(), element);
     fwls = idf.get_func_with_least_y_squares();
-    globals()[var_name] = figure(x_axis_label='X-Axis', y_axis_label='Y-Axis', title="Found candidate for from list of ideal #" + str(i))
+    globals()[var_name] = figure(x_axis_label='X-Axis', y_axis_label='Y-Axis', title="Found candidate from list of ideal #" + str(i))
     x_values= fwls.get_f2().get_x_values()
     y_values = fwls.get_f2().get_y_values()
     globals()[var_name].line(x='x', y='y'+str(i), source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values)})))
