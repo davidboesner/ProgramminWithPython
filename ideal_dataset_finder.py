@@ -3,6 +3,7 @@ Created on 14.04.2023
 
 @author: david
 '''
+from hamcrest.core.core.isnone import none
 
 """
 The purpose of this class is to find the ideal function, which is the best fit out of the functions provided.
@@ -20,13 +21,15 @@ import numpy as np
 class Function2Compare():
     f1 = None
     f2 = None
+    index_of_compared_function = None
     
-    def __init__(self, f1,f2):
+    def __init__(self, f1,f2,index_of_compared_function):
         if not isinstance(f1, FunctionXY) or not isinstance(f2, FunctionXY):
             raise IllegalTypeException();
         
         self.f1 = f1
         self.f2 = f2
+        self.index_of_compared_function = index_of_compared_function
         
     def __get_sum_of_y_deviations_squared(self):
         """
@@ -58,6 +61,9 @@ class Function2Compare():
     def get_f2(self):
         return self.f2
     
+    def get_index_of_compared_function(self):
+        return self.index_of_compared_function
+    
 class IdealDatasetFinder():
     all_datasets = None
     function = None
@@ -69,7 +75,7 @@ class IdealDatasetFinder():
     def get_func_with_least_y_squares(self):
         l = []
         for ds in self.all_datasets:
-            fc = Function2Compare(self.function,ds)
+            fc = Function2Compare(self.function,ds,ds.get_n())
             l.append(fc)
         return min(l);
     

@@ -28,7 +28,7 @@ class pd2ListOfFunctionsXY:
         for i in range(1,max_y):
             dataset_x = list(self.pd["x"])
             dataset_y = list(self.pd["y"+str(i)])            
-            r.append(FunctionXY(dataset_x, dataset_y))
+            r.append(FunctionXY(dataset_x, dataset_y, i))
         return r
           
 if __name__ == '__main__':
