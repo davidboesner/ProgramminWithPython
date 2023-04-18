@@ -19,30 +19,30 @@ from numbaAdder import get_sum_of_deviations_squared
 import numpy as np
 
 class Function2Compare():
-    f1 = None
-    f2 = None
+    ideal_data = None
+    training_data = None
     index_of_compared_function = None
     
-    def __init__(self, f1,f2,index_of_compared_function):
-        if not isinstance(f1, FunctionXY) or not isinstance(f2, FunctionXY):
+    def __init__(self, ideal_data,training_data,index_of_compared_function):
+        if not isinstance(ideal_data, FunctionXY) or not isinstance(training_data, FunctionXY):
             raise IllegalTypeException();
         
-        self.f1 = f1
-        self.f2 = f2
+        self.ideal_data = ideal_data
+        self.training_data = training_data
         self.index_of_compared_function = index_of_compared_function
         
     def __get_sum_of_y_deviations_squared(self):
         """
-        Gets the sum of the deviations between the functions f1 and f2 sqaured
+        Gets the sum of the deviations between the functions ideal_data and training_data squared
         """
 
         # check input
-        if len(self.f1.get_x_values())!=len(self.f2.get_x_values()):
+        if len(self.ideal_data.get_x_values())!=len(self.training_data.get_x_values()):
             raise UnequalLengthExcpetion()
         
         # sum y values
-        y1 = np.array(self.f1.get_y_values())
-        y2 = np.array(self.f2.get_y_values())
+        y1 = np.array(self.ideal_data.get_y_values())
+        y2 = np.array(self.training_data.get_y_values())
 
         return get_sum_of_deviations_squared(y1, y2)
     
@@ -55,11 +55,11 @@ class Function2Compare():
     def __gt__(self, other):
         return self.__get_sum_of_y_deviations_squared() > other.__get_sum_of_y_deviations_squared()
     
-    def get_f1(self):
-        return self.f1
+    def get_ideal_function(self):
+        return self.ideal_data
     
-    def get_f2(self):
-        return self.f2
+    def get_training_data(self):
+        return self.training_data
     
     def get_index_of_compared_function(self):
         return self.index_of_compared_function
