@@ -12,10 +12,12 @@ from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show, gridplot
 
 from ideal_dataset_finder import IdealDatasetFinder
+from line import Line
+import numpy as np
 import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
 import sqlalchemy as db
-import numpy as np
+
 
 engine = db.create_engine('sqlite:///db.db')
 
@@ -94,6 +96,19 @@ for element in list_of_training_data:
     i+=1
     
 # the test data (B) must be loaded line-by-line from another CSV-file and – if it complies with the compiling criterion – matched to one of the four functions chosen under i (subsection above)
+list_all_lines = []
+with open("resources/test.csv") as f:
+    for l in f.readlines(): 
+        x = l.split(",")[0].strip()
+        y = l.split(",")[1].strip()
+        try:
+            x = float(x)
+            y = float(y)
+        except:
+            continue
+        line = Line(x,y)
+        list_all_lines.append(line)
+list_all_lines_sorted = sorted(list_all_lines, key=lambda line: line.x)
 
 # Afterwards, the results need to be saved into another fourcolumn-table in the SQLite database
 grid = gridplot([training_data_to_plot, ideal_data_to_plot, list_of_figures])
