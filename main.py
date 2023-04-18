@@ -11,7 +11,6 @@ import sys
 
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, show, gridplot
-from future.backports.http.client import FOUND
 
 from ideal_dataset_finder import IdealDatasetFinder
 from line import Line
@@ -19,7 +18,9 @@ import numpy as np
 import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
 import sqlalchemy as db
-
+from sqlalchemy import Column, Integer, Float
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 engine = db.create_engine('sqlite:///db.db')
 
@@ -112,15 +113,49 @@ with open("resources/test.csv") as f:
         list_all_lines.append(line)
 list_all_lines_sorted = sorted(list_all_lines, key=lambda line: line.x)
 
+
+
+
+
+
+# create a session factory
+Session = sessionmaker(bind=engine)
+
+# create a base class for declarative models
+
+Base = declarative_base()
+
+class TestFunctionAndMapping(Base):
+    __tablename__ = 'TestFunctionAndMapping'
+    
+    id = Column(Integer, primary_key=True)
+    #X (test func)
+    x_test = Column(Float)
+     
+    #Y (test func)
+    y_test = Column(Float) 
+    
+    #Delta Y (test func)
+    dy_test = Column(Float)
+     
+    #Number of ideal func
+    n_ideal = Column(Integer)
+
+# create the table in the database
+Base.metadata.create_all(engine)
+
+# create a session
+session = Session()
+
 # match to one of the four functions chosen under i (subsection above)
 for l in list_all_lines_sorted:
     f_x = l.x
     f_y = l.y
     
     min_distance_x = None
-    min_distance_y = None
+    min_distance_y_ideal = None
     min_distance_delta = None
-    min_distance_index = None
+    ideal_index = None
     
     for f in list_of_ideal_candidates:
         ideal_function = f.get_ideal_function()
@@ -130,12 +165,21 @@ for l in list_all_lines_sorted:
             ideal_data_y = ideal_function_x_y_dict[f_x]
             dist = abs((ideal_data_y - f_y))
             if min_distance_delta == None or (dist < min_distance_delta and dist > math.sqrt(2)):
-                min_distance_y = ideal_data_y
+                min_distance_y_ideal = ideal_data_y
                 min_distance_x = f_x
-                min_distance_index = n_ideal_function
+                ideal_index = n_ideal_function
                 min_distance_delta = ideal_data_y - f_y
-            
     
+    # create a user object and add it to the session
+    tfam = TestFunctionAndMapping(x_test=f_x, y_test=f_y, dy_test=min_distance_delta, n_ideal=ideal_index)
+    session.add(tfam)
+
+# commit the transaction to the database
+session.commit()
+
+# close the session
+session.close()
+  
 # Afterwards, the results need to be saved into another fourcolumn-table in the SQLite database
 grid = gridplot([training_data_to_plot, ideal_data_to_plot, list_of_figures])
 
