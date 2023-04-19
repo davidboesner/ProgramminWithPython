@@ -23,7 +23,7 @@ class Function2Compare():
     training_data = None
     index_of_compared_function = None
     
-    def __init__(self, ideal_data,training_data,index_of_compared_function):
+    def __init__(self, training_data,ideal_data, index_of_compared_function):
         if not isinstance(ideal_data, FunctionXY) or not isinstance(training_data, FunctionXY):
             raise IllegalTypeException();
         
@@ -55,7 +55,7 @@ class Function2Compare():
     def __gt__(self, other):
         return self.__get_sum_of_y_deviations_squared() > other.__get_sum_of_y_deviations_squared()
     
-    def get_ideal_function(self):
+    def get_ideal_data(self):
         return self.ideal_data
     
     def get_training_data(self):
@@ -65,19 +65,16 @@ class Function2Compare():
         return self.index_of_compared_function
     
 class IdealDatasetFinder():
-    all_datasets = None
+    ideal_datasets = None
     function = None
     
     def __init__(self, a, f):
-        self.all_datasets = a
+        self.ideal_datasets = a
         self.function = f
     
     def get_func_with_least_y_squares(self):
         l = []
-        for ds in self.all_datasets:
+        for ds in self.ideal_datasets:
             fc = Function2Compare(self.function,ds,ds.get_n())
             l.append(fc)
-        return min(l);
-    
-if __name__ == '__main__':
-    doctest.testmod()
+        return min(l)
