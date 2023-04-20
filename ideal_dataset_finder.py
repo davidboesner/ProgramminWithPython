@@ -15,7 +15,7 @@ import doctest
 from exceptions.IllegalTypeException import IllegalTypeException
 from exceptions.UnequalsLenghtException import UnequalLengthExcpetion
 from function_xy import FunctionXY
-from numbaAdder import get_sum_of_deviations_squared
+from numba_adder import get_sum_of_deviations_squared
 import numpy as np
 
 class Function2Compare():
