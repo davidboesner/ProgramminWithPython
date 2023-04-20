@@ -174,7 +174,7 @@ for l in list_all_lines_sorted:
                 min_distance_y_ideal = ideal_data_y
                 min_distance_x = f_x
                 ideal_index = n_ideal_function
-                min_distance_delta = ideal_data_y - f_y
+                min_distance_delta =  f_y - ideal_data_y
     
     # create a user object and add it to the session
     tfam = TestFunctionAndMapping(x_test=f_x, y_test=f_y, dy_test=min_distance_delta, n_ideal=ideal_index)
