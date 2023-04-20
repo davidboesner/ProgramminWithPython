@@ -3,14 +3,11 @@ Created on 14.04.2023
 
 @author: david
 '''
-from hamcrest.core.core.isnone import none
 
 """
 The purpose of this class is to find the ideal function, which is the best fit out of the functions provided.
 The criterion for choosing the ideal functions for the training function is how they minimize the sum of all ydeviations squared (Least-Square)
 """
-
-import doctest
 
 from exceptions.IllegalTypeException import IllegalTypeException
 from exceptions.UnequalsLenghtException import UnequalLengthExcpetion
