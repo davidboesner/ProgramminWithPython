@@ -22,6 +22,7 @@ import numpy as np
 import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
 import sqlalchemy as db
+from bokeh.models import Span
 
 db_name = "db.db"
 try:
@@ -202,12 +203,18 @@ for i, element in enumerate(list_of_ideal_candidates):
     n_ideal = element.get_ideal_data().get_n()
     x_values_diff = []
     y_values_diff = []
+    p = globals()[var_name]
+
     for j,tfam_n_ideal in enumerate(test_function_and_mapping.n_ideal):
         if tfam_n_ideal == n_ideal:
             x_values_diff.append(test_function_and_mapping.x_test[j]) 
             y_values_diff.append(test_function_and_mapping.y_test[j])
-    globals()[var_name].line(x='x', y='y'+str(i), source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values)})))
-    globals()[var_name].dot(x='x', y='y'+str(i), color="red", size=10, source=(ColumnDataSource(data={"x": x_values_diff, "y"+str(i): np.array(y_values_diff)})))
+            vline = Span(location=test_function_and_mapping.x_test[j], dimension='height', line_color='red', line_width=0.5, line_dash=[6, 3])
+            p.add_layout(vline)
+    
+    source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values)}))
+    globals()[var_name].line(x='x', y='y'+str(i),source=source)
+    globals()[var_name].dot(x='x', y='y'+str(i), color="green", size=20, source=(ColumnDataSource(data={"x": x_values_diff, "y"+str(i): np.array(y_values_diff)})))
     list_of_figures_changed.append(globals()[var_name])
     
 
