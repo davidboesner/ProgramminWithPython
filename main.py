@@ -214,7 +214,7 @@ for i, element in enumerate(list_of_ideal_candidates):
     TOOLTIPS = [        
         ("diff", "@diff"),
     ]
-    source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values), "diff":[0] * 400}))    
+    source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values), "diff":[0] * len(x_values)}))    
     p.line(x='x', y='y'+str(i),source=source)
     p.dot(x='x', y='y'+str(i), color="green", size=20, source=(ColumnDataSource(data={"x": x_values_diff, "y"+str(i): np.array(y_values_diff), "diff": all_diffs})))
     p.add_tools(HoverTool(tooltips=TOOLTIPS))
