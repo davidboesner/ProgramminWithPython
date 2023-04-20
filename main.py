@@ -10,7 +10,7 @@ import math
 import os
 import sys
 
-from bokeh.models import ColumnDataSource
+from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.plotting import figure, show, gridplot
 from sqlalchemy import Column, Integer, Float
 from sqlalchemy.ext.declarative import declarative_base
@@ -32,8 +32,6 @@ except Exception:
 
 # drop old database
 engine = db.create_engine('sqlite:///' + db_name)
-
-
 
 filename = 'resources/train.csv'
 
@@ -197,6 +195,7 @@ list_of_figures_changed = []
 for i, element in enumerate(list_of_ideal_candidates):
     i = i+1    
     var_name = 'var_ideal_my_func_changed' + str(i)
+    
     globals()[var_name] = figure(x_axis_label='X-Axis', y_axis_label='Y-Axis', title="Found candidate from list of ideal #" + str(i) + " with diffs")
     x_values= element.get_training_data().get_x_values()
     y_values = element.get_training_data().get_y_values()
@@ -204,28 +203,27 @@ for i, element in enumerate(list_of_ideal_candidates):
     x_values_diff = []
     y_values_diff = []
     p = globals()[var_name]
-
+    all_diffs = []
     for j,tfam_n_ideal in enumerate(test_function_and_mapping.n_ideal):
         if tfam_n_ideal == n_ideal:
             x_values_diff.append(test_function_and_mapping.x_test[j]) 
             y_values_diff.append(test_function_and_mapping.y_test[j])
             vline = Span(location=test_function_and_mapping.x_test[j], dimension='height', line_color='red', line_width=0.5, line_dash=[6, 3])
             p.add_layout(vline)
+            all_diffs.append(test_function_and_mapping.dy_test[j])
+    TOOLTIPS = [        
+        ("diff", "@diff"),
+    ]
+    source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values)}))    
+    p.line(x='x', y='y'+str(i),source=source)
+    p.dot(x='x', y='y'+str(i), color="green", size=20, source=(ColumnDataSource(data={"x": x_values_diff, "y"+str(i): np.array(y_values_diff), "diff": all_diffs})))
+    p.add_tools(HoverTool(tooltips=TOOLTIPS))
     
-    source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values)}))
-    globals()[var_name].line(x='x', y='y'+str(i),source=source)
-    globals()[var_name].dot(x='x', y='y'+str(i), color="green", size=20, source=(ColumnDataSource(data={"x": x_values_diff, "y"+str(i): np.array(y_values_diff)})))
-    list_of_figures_changed.append(globals()[var_name])
+    list_of_figures_changed.append(p)
     
 
 # Afterwards, the results need to be saved into another fourcolumn-table in the SQLite database
 grid = gridplot([training_data_to_plot, ideal_data_to_plot, list_of_ideal_candiate_figures, list_of_figures_changed])
 
-
-
-
 # Render the plot
 show(grid)    
-     
-if __name__ == '__main__':
-    pass
