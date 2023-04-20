@@ -213,6 +213,7 @@ for i, element in enumerate(list_of_ideal_candidates):
             all_diffs.append(test_function_and_mapping.dy_test[j])
     TOOLTIPS = [        
         ("diff", "@diff"),
+        ("(x,y)", "(@x, @y"+str(i)+")"),
     ]
     source=(ColumnDataSource(data={"x": x_values, "y"+str(i): np.array(y_values), "diff":[0] * len(x_values)}))    
     p.line(x='x', y='y'+str(i),source=source)
