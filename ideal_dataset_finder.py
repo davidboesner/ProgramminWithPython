@@ -70,6 +70,9 @@ class IdealDatasetFinder():
         self.function = f
     
     def get_func_with_least_y_squares(self):
+        """
+        Gets the function with the least squares y distance
+        """
         l = []
         for ds in self.ideal_datasets:
             fc = Function2Compare(self.function,ds,ds.get_n())

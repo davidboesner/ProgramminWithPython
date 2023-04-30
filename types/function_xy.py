@@ -7,7 +7,7 @@ from exceptions.UnequalsLenghtException import UnequalLengthExcpetion
 
 class FunctionXY():
     '''
-    classdocs
+    Wrapper type for function with x and y values
     '''
     
     x_values = None
@@ -27,10 +27,19 @@ class FunctionXY():
         self.n = n
         
     def get_x_values(self):
+        """
+        Returns the x values
+        """
         return self.x_values
         
     def get_y_values(self):
+        """
+        Returns the y values
+        """
         return self.y_values
     
     def get_n(self):
+        """
+        Returns the index of the function
+        """
         return self.n

@@ -100,7 +100,10 @@ for i, element in enumerate(list_of_training_data):
 
     idf = IdealDatasetFinder(list_of_ideal_data.getListOfFunctionsXY(), element);
     #get the ideal data for data set
-    fwls = idf.get_func_with_least_y_squares();
+    try:
+        fwls = idf.get_func_with_least_y_squares();
+    except:
+        sys.exit("Could not parse input")
     globals()[var_name] = figure(x_axis_label='X-Axis', y_axis_label='Y-Axis', title="Found candidate from list of ideal #" + str(i) + " index of ideal data: " + str(fwls.get_index_of_compared_function()))
     x_values= fwls.get_ideal_data().get_x_values()
     y_values = fwls.get_ideal_data().get_y_values()
