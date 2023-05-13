@@ -17,7 +17,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from ideal_dataset_finder import IdealDatasetFinder
-from line import Line
+from function_2_compare import Line
 import numpy as np
 import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
@@ -111,7 +111,7 @@ for i, element in enumerate(list_of_training_data):
     list_of_ideal_candiate_figures.append(globals()[var_name])
     list_of_ideal_candidates.append(fwls)
     
-# the test data (B) must be loaded line-by-line from another CSV-file and – if it complies with the compiling criterion – matched to one of the four functions chosen under i (subsection above)
+# the test data (B) must be loaded function_2_compare-by-function_2_compare from another CSV-file and – if it complies with the compiling criterion – matched to one of the four functions chosen under i (subsection above)
 list_all_lines = []
 with open("resources/test.csv") as f:
     for l in f.readlines(): 
