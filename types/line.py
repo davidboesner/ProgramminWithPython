@@ -1,6 +1,8 @@
 '''
 Created on 18.04.2023
 
+This is a wrapper class for x and y coordinates
+
 @author: david
 '''
 class Line():
