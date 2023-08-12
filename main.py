@@ -31,6 +31,7 @@ try:
 except Exception:
     pass
 logging.basicConfig(filename="app.log", filemode="w", format="%(name)s- %(levelname)s - %(message)s")
+logger = logging.getLogger('pwp')
 
 # drop old database
 engine = db.create_engine('sqlite:///' + db_name)
@@ -41,9 +42,11 @@ filename = 'resources/train.csv'
 
 try:
     df = pd.read_csv(filename)
-except FileNotFoundError:    
-    sys.exit("File: " + filename + " not found")
-    logging.error("CSV file not found")
+except FileNotFoundError:
+    logger.error("CSV file not found")    
+    sys.exit("File: " + filename + " not found")    
+
+logger.info("Starting program")
 
 table_name = 'ideal_function_x_y_dict'
 df.to_sql(table_name, engine, if_exists='replace', index=True)
@@ -69,8 +72,10 @@ for i in range(1,max_y):
 filename = 'resources/ideal.csv'
 try:
     df = pd.read_csv(filename)
-except FileNotFoundError:    
-    sys.exit("File: " + filename + " not found")
+except FileNotFoundError:
+    m = "File: " + filename + " not found"
+    logger.error(m)        
+    sys.exit(m)
 
 table_name = 'ideal_function'
 df.to_sql(table_name, engine, if_exists='replace', index=True)
