@@ -9,6 +9,9 @@ The purpose of this class is to find the ideal function, which is the best fit o
 The criterion for choosing the ideal functions for the training function is how they minimize the sum of all ydeviations squared (Least-Square)
 """
 
+import sys
+sys.path.append('types')
+
 from exceptions.IllegalTypeException import IllegalTypeException
 from exceptions.UnequalsLenghtException import UnequalLengthExcpetion
 from function_xy import FunctionXY
