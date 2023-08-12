@@ -23,12 +23,14 @@ import pandas as pd
 from pd_2_list_of_functions import pd2ListOfFunctionsXY
 import sqlalchemy as db
 from bokeh.models import Span
+import logging
 
 db_name = "db.db"
 try:
     os.remove(db_name)
 except Exception:
     pass
+logging.basicConfig(filename="app.log", filemode="w", format="%(name)s- %(levelname)s - %(message)s")
 
 # drop old database
 engine = db.create_engine('sqlite:///' + db_name)
@@ -41,7 +43,8 @@ try:
     df = pd.read_csv(filename)
 except FileNotFoundError:    
     sys.exit("File: " + filename + " not found")
-    
+    logging.error("CSV file not found")
+
 table_name = 'ideal_function_x_y_dict'
 df.to_sql(table_name, engine, if_exists='replace', index=True)
 
